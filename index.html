@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>CRUD APP</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg light navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="#">Pricing</a>
+                        <a class="nav-link disabled">Disabled</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container mt-5 col-6">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Chapter Name" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button id="add_btn" class="btn btn-outline-success" type="button" id="button-addon2">Add</button>
+            </div>
+            <ul id="parentLi" class="list-group">
+                <li class="list-group-item d-flex justify-content-between">
+                    <h3 class="flex-grow-1">Items</h3>
+                    <button class="btn btn-warning mx-3" onclick="editChapter(this)">Edit</button>
+                    <button class="btn btn-danger" onclick="removeChapter(this)">Remove</button>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        let addBtn = document.getElementById('add_btn');
+        addBtn.addEventListener('click', addChapter);
+
+
+        let parentLi = document.getElementById('parentLi');
+
+
+        function addChapter(e) {
+            if (parentLi.children[0].className == "emptyMsg") {
+                parentLi.children[0].remove()
+            }
+            let currentBtn = e.currentTarget;
+            let currentInput = currentBtn.previousElementSibling;
+            console.log(currentInput.value)
+            let currentChapter = currentInput.value;
+
+            let newli = document.createElement('li');
+            // newli.classList.add('list-group-item');
+            newli.className = "list-group-item d-flex justify-content-between"
+            newli.innerHTML = `<h3 class="flex-grow-1">${currentChapter}</h3>
+                    <button class="btn btn-warning mx-3">Edit</button>
+                    <button class="btn btn-danger" onclick="removeChapter(this)">Remove</button>`
+
+
+
+            parentLi.appendChild(newli);
+        }
+
+        function removeChapter(currElement) {
+            // console.log(currElement)
+            currElement.parentElement.remove()
+
+            if (parentLi.children.length <= 0) {
+                let newEmptyMsg = document.createElement("h3");
+                newEmptyMsg.classList.add("emptyMsg")
+                newEmptyMsg.textContent = "Nothing is here.Please Add a Chapter!!"
+                parentLi.appendChild(newEmptyMsg)
+            }
+        }
+
+        function editChapter(currElement) {
+
+            if (currElement.textContent == "Done") {
+
+                currElement.textContent = "Edit"
+                let currChapterName = currElement.previousElementSibling.value
+                let currHeading = document.createElement("h3")
+                currHeading.className = "flex-grow-1"
+                currHeading.textContent = currChapterName
+                currElement.parentElement.replaceChild(currHeading, currElement.previousElementSibling)
+
+
+            } else {
+                currElement.textContent = "Done"
+                let currChapterName = currElement.previousElementSibling.textContent
+                let currIntput = document.createElement("input")
+                currIntput.type = "text"
+                currIntput.placeholder = "Chapter Name"
+                currIntput.className = "form-control"
+                currIntput.value = currChapterName
+
+
+                currElement.parentElement.replaceChild(currIntput, currElement.previousElementSibling)
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>
